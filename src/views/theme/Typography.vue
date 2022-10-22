@@ -82,7 +82,7 @@ export default {
   data() {
     return {
       arrayTipos: [],
-      accion: 1, //1 para ingreso, 2 para actualizacion
+      accion: 1, //1 para ingreso, 2 para actualizacion, 3 para eliminar
       nombre: '',
       id: 0,
     }
@@ -106,12 +106,14 @@ export default {
       let me = this
       axios
         .post(`http://localhost:3000/tipo_usuario/create`, {
-          nombre: me.nombre,
+          nombre: me.nombre, //Aqui se envian los atributos
+          //primero como se llama en backend, luego como se declaro en frontend
         })
         .then(function (response) {
           me.traerTipos()
           console.log(response)
           me.accion = 1
+          me.nombre = ''
         })
         .catch(function (error) {
           console.log(error)
@@ -163,7 +165,6 @@ export default {
         }
         case 'eliminar': {
           me.id = data['id']
-          me.nombre = data['nombre']
           me.accion = 3
           break
         }

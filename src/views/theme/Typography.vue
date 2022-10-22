@@ -50,7 +50,16 @@
                 placeholder="Tipo de usuario"
                 v-model.trim="nombre"
                 :disabled="accion === 3"
-              />
+              /><!--
+              <CSelect label="Tabla heredada" :options="arrayHerencia" /> -->
+              <select>
+                <option
+                  v-for="heredados in arrayHerencia"
+                  :key="heredados.id"
+                  :value="heredados.id"
+                  v-text="heredados.nombre"
+                />
+              </select>
               <CButton color="info" v-if="accion === 1" @click="guardarTipos()"
                 >Guardar
               </CButton>
@@ -82,6 +91,7 @@ export default {
   data() {
     return {
       arrayTipos: [],
+      arrayHerencia: [],
       accion: 1, //1 para ingreso, 2 para actualizacion, 3 para eliminar
       nombre: '',
       id: 0,
@@ -97,6 +107,18 @@ export default {
         .get(`http://localhost:3000/tipo_usuario/get`)
         .then(function (response) {
           me.arrayTipos = response.data
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    traerHerencia() {
+      //Aqui llamar a traer los datos de la tabla que hereda
+      let me = this
+      axios
+        .get(`http://localhost:3000/tipo_usuario/get`)
+        .then(function (response) {
+          me.arrayHerencia = response.data
         })
         .catch(function (error) {
           console.log(error)
@@ -172,7 +194,7 @@ export default {
     },
   },
   mounted() {
-    this.traerTipos()
+    this.traerTipos(), this.traerHerencia()
   },
 }
 </script>

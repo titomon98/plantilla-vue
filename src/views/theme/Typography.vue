@@ -58,6 +58,7 @@
                   :key="heredados.id"
                   :value="heredados.id"
                   v-text="heredados.nombre"
+                  :v-model="id_heredado"
                 />
               </select>
               <CButton color="info" v-if="accion === 1" @click="guardarTipos()"
@@ -95,6 +96,7 @@ export default {
       accion: 1, //1 para ingreso, 2 para actualizacion, 3 para eliminar
       nombre: '',
       id: 0,
+      id_heredado: 0,
     }
   },
   computed: {
@@ -187,6 +189,7 @@ export default {
         }
         case 'eliminar': {
           me.id = data['id']
+          me.nombre = data['nombre']
           me.accion = 3
           break
         }

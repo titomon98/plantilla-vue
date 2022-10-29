@@ -33,6 +33,11 @@ const routes = [
         name: 'CRUD',
         component: () => import('@/views/theme/CRUD.vue'),
       },
+      {
+        path: '/theme/montado',
+        name: 'Montado',
+        component: () => import('@/views/theme/Montado.vue'),
+      },
     ],
   },
   {

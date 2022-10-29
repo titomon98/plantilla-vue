@@ -7,7 +7,7 @@ export default [
   },
   {
     component: 'CNavTitle',
-    name: 'Theme',
+    name: 'Arquitectura I',
   },
   {
     component: 'CNavItem',
@@ -19,10 +19,20 @@ export default [
     component: 'CNavItem',
     name: 'CRUD',
     to: '/theme/crud',
-    icon: 'cil-pencil',
+    icon: 'cil-user',
     badge: {
       color: 'danger',
       text: 'IMPORTANTE',
+    },
+  },
+  {
+    component: 'CNavItem',
+    name: 'Montado',
+    to: '/theme/montado', //ruta para apuntar al componente
+    icon: 'cil-people',
+    badge: {
+      color: 'info',
+      text: 'MONTAJE',
     },
   },
 ]

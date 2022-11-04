@@ -27,6 +27,16 @@ export default [
   },
   {
     component: 'CNavItem',
+    name: 'COMPRAS',
+    to: '/theme/crud1', //ruta para apuntar al componente
+    icon: 'cil-basket',
+    badge: {
+      color: 'success',
+      text: 'Comprar',
+    },
+  },
+  {
+    component: 'CNavItem',
     name: 'Montado',
     to: '/theme/montado', //ruta para apuntar al componente
     icon: 'cil-people',

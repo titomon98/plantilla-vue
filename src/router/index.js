@@ -34,6 +34,11 @@ const routes = [
         component: () => import('@/views/theme/CRUD.vue'),
       },
       {
+        path: '/theme/crud1',
+        name: 'CRUD1',
+        component: () => import('@/views/theme/CRUD1.vue'),
+      },
+      {
         path: '/theme/montado',
         name: 'Montado',
         component: () => import('@/views/theme/Montado.vue'),

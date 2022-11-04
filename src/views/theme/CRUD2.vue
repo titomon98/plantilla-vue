@@ -4,13 +4,13 @@
       <CCard class="mb-4">
         <CCardHeader> Tabla </CCardHeader>
         <CCardBody>
-          <table class="table table-dark">
+          <table class="table table-success">
             <thead>
               <tr>
                 <th>Id</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Total</th>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Email</th>
                 <th>
                   <CButton
                     color="info"
@@ -24,9 +24,9 @@
             <tbody>
               <tr v-for="tipos in arrayTipos" :key="tipos.id">
                 <td v-text="tipos.id"></td>
-                <td v-text="tipos.producto"></td>
-                <td v-text="tipos.cantidad"></td>
-                <td v-text="tipos.total"></td>
+                <td v-text="tipos.nombre"></td>
+                <td v-text="tipos.telefono"></td>
+                <td v-text="tipos.email"></td>
                 <td>
                   <CButton
                     color="warning"
@@ -49,43 +49,29 @@
   <CRow>
     <CCol>
       <CCard class="mb-4">
-        <CCardHeader> Formulario </CCardHeader>
+        <CCardHeader> Formulario de Proveedores</CCardHeader>
         <CCardBody>
           <CForm>
             <div class="mb-3">
               <CFormLabel>Datos</CFormLabel>
               <CFormInput
                 type="text"
-                placeholder="Productos"
-                v-model.trim="id_productos"
+                placeholder="Nombre proveedor"
+                v-model.trim="nombre"
                 :disabled="accion === 3"
               >
               </CFormInput>
               <CFormInput
                 type="text"
-                placeholder="Proveedor"
-                v-model.trim="id_proveedor"
+                placeholder="Numero Telefono"
+                v-model.trim="telefono"
                 :disabled="accion === 3"
               >
               </CFormInput>
               <CFormInput
                 type="text"
-                placeholder="Producto"
-                v-model.trim="producto"
-                :disabled="accion === 3"
-              >
-              </CFormInput>
-              <CFormInput
-                type="text"
-                placeholder="Cantidad"
-                v-model.trim="cantidad"
-                :disabled="accion === 3"
-              >
-              </CFormInput>
-              <CFormInput
-                type="text"
-                placeholder="Total"
-                v-model.trim="total"
+                placeholder="Correo Electronico"
+                v-model.trim="email"
                 :disabled="accion === 3"
               /><!--
               <CSelect label="Tabla heredada" :options="arrayHerencia" /> -->
@@ -113,16 +99,14 @@
 import axios from 'axios'
 
 export default {
-  name: 'crud1',
+  name: 'crud2',
   data() {
     return {
       arrayTipos: [],
       accion: 1, //1 para ingreso, 2 para actualizacion, 3 para eliminar
-      id_productos: '',
-      id_proveedor: '',
-      producto: '',
-      cantidad: '',
-      total: '',
+      nombre: '',
+      telefono: '',
+      email: '',
       id: 0,
     }
   },
@@ -133,7 +117,7 @@ export default {
     traerTipos() {
       let me = this
       axios
-        .get(`http://localhost:3000/compras/get`)
+        .get(`http://localhost:3000/proveedores/get`)
         .then(function (response) {
           me.arrayTipos = response.data
         })
@@ -144,12 +128,10 @@ export default {
     guardarTipos() {
       let me = this
       axios
-        .post(`http://localhost:3000/compras/create`, {
-          id_productos: me.id_productos,
-          id_proveedor: me.id_proveedor,
-          producto: me.producto,
-          cantidad: me.cantidad,
-          total: me.total,
+        .post(`http://localhost:3000/proveedores/create`, {
+          nombre: me.nombre,
+          telefono: me.telefono,
+          email: me.email,
           //Aqui se envian los atributos
           //primero como se llama en backend, luego como se declaro en frontend
         })
@@ -157,11 +139,9 @@ export default {
           me.traerTipos()
           console.log(response)
           me.accion = 1
-          me.id_productos = ''
-          me.id_proveedor = ''
-          me.producto = ''
-          me.cantidad = ''
-          me.total = ''
+          me.nombre = ''
+          me.telefono = ''
+          me.email = ''
         })
         .catch(function (error) {
           console.log(error)
@@ -170,24 +150,20 @@ export default {
     actualizarTipos() {
       let me = this
       axios
-        .put(`http://localhost:3000/compras/update`, {
+        .put(`http://localhost:3000/proveedores/update`, {
           id: me.id,
-          id_productos: me.id_productos,
-          id_proveedor: me.id_proveedor,
-          producto: me.producto,
-          cantidad: me.cantidad,
-          total: me.total,
+          nombre: me.nombre,
+          telefono: me.telefono,
+          email: me.email,
         })
         .then(function (response) {
           me.traerTipos()
           console.log(response)
           me.accion = 1
           me.id = 0
-          me.id_productos = ''
-          me.id_proveedor = ''
-          me.producto = ''
-          me.cantidad = ''
-          me.total = ''
+          me.nombre = ''
+          me.telefono = ''
+          me.email = ''
         })
         .catch(function (error) {
           console.log(error)
@@ -196,19 +172,16 @@ export default {
     eliminarTipos() {
       let me = this
       axios
-        .delete(`http://localhost:3000/compras/delete`, {
+        .delete(`http://localhost:3000/proveedores/delete`, {
           id: me.id,
         })
         .then(function (response) {
           me.traerTipos()
           console.log(response)
           me.accion = 1
-          me.id_productos = ''
-          me.id_proveedor = ''
-          me.producto = ''
-          me.cantidad = ''
-          me.total = ''
           me.nombre = ''
+          me.telefono = ''
+          me.email = ''
           me.id = 0
         })
         .catch(function (error) {
@@ -220,21 +193,17 @@ export default {
       switch (accion) {
         case 'actualizar': {
           me.id = data['id']
-          me.id_productos = data['id_productos']
-          me.id_proveedor = data['id_proveedor']
-          me.producto = data['producto']
-          me.cantidad = data['cantidad']
-          me.total = data['total']
+          me.nombre = data['nombre']
+          me.telefono = data['telefono']
+          me.email = data['email']
           me.accion = 2
           break
         }
         case 'eliminar': {
           me.id = data['id']
-          me.id_productos = data['id_productos']
-          me.id_proveedor = data['id_proveedor']
-          me.producto = data['producto']
-          me.cantidad = data['cantidad']
-          me.total = data['total']
+          me.nombre = data['nombre']
+          me.telefono = data['telefono']
+          me.email = data['email']
           me.accion = 3
           break
         }

@@ -29,9 +29,14 @@ const routes = [
         component: () => import('@/views/theme/Typography.vue'),
       },
       {
-        path: '/theme/crud',
-        name: 'CRUD',
-        component: () => import('@/views/theme/CRUD.vue'),
+        path: '/theme/Ventas',
+        name: 'Ventas',
+        component: () => import('@/views/theme/Ventas.vue'),
+      },
+      {
+        path: '/theme/montado',
+        name: 'Montado',
+        component: () => import('@/views/theme/Montado.vue'),
       },
     ],
   },

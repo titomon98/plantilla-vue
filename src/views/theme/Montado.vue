@@ -2,9 +2,7 @@
   <CRow>
     <CCol>
       <CCard class="mb-4">
-        <CCardHeader>
-          En este componente deben realizar su propio CRUD
-        </CCardHeader>
+        <CCardHeader> En este componente montado en clase</CCardHeader>
         <CCardBody>
           <table>
             <thead>

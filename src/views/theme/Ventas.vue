@@ -2,22 +2,24 @@
   <CRow>
     <CCol>
       <CCard class="mb-4">
-        <CCardHeader> Tabla </CCardHeader>
+        <CCardHeader>Listado de ventas</CCardHeader>
         <CCardBody>
           <table>
             <thead>
               <tr>
-                <th>id</th>
-                <th>Nombre</th>
-                <th>Estado</th>
+                <th>Id</th>
+                <th>Fecha</th>
+                <th>Monto</th>
+                <th>Cliente</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="tipos in arrayTipos" :key="tipos.id">
                 <td v-text="tipos.id"></td>
-                <td v-text="tipos.nombre"></td>
-                <td v-text="tipos.estado"></td>
+                <td v-text="tipos.createdAt"></td>
+                <td v-text="tipos.monto"></td>
+                <td v-text="tipos.cliente.nombre"></td>
                 <td>
                   <CButton
                     color="warning"
@@ -44,15 +46,24 @@
         <CCardBody>
           <CForm>
             <div class="mb-3">
-              <CFormLabel>Nombre</CFormLabel>
+              <CFormLabel>Monto</CFormLabel>
               <CFormInput
                 type="text"
-                placeholder="Tipo de usuario"
-                v-model.trim="nombre"
+                placeholder="Monto"
+                v-model.trim="monto"
                 :disabled="accion === 3"
-              /><!--
+              />
+              <CFormLabel>id_cliente</CFormLabel>
+              <CFormInput
+                type="text"
+                placeholder="Id_cliente"
+                v-model.trim="id_clinte"
+                :disabled="accion"
+              />
+              <!--
               <CSelect label="Tabla heredada" :options="arrayHerencia" /> -->
-              <select>
+              <CFormLabel>Cliente</CFormLabel>
+              <select v-model.trim="id_clinte">
                 <option
                   v-for="heredados in arrayHerencia"
                   :key="heredados.id"
@@ -88,15 +99,17 @@
 import axios from 'axios'
 
 export default {
-  name: 'Typography',
+  name: 'Ventas',
   data() {
     return {
       arrayTipos: [],
       arrayHerencia: [],
       accion: 1, //1 para ingreso, 2 para actualizacion, 3 para eliminar
       nombre: '',
+      monto: 0,
       id: 0,
       id_heredado: 0,
+      id_clinte: 0,
     }
   },
   computed: {
@@ -106,7 +119,7 @@ export default {
     traerTipos() {
       let me = this
       axios
-        .get(`http://localhost:3000/tipo_usuario/get`)
+        .get(`http://localhost:3000/venta/get`)
         .then(function (response) {
           me.arrayTipos = response.data
         })
@@ -118,7 +131,7 @@ export default {
       //Aqui llamar a traer los datos de la tabla que hereda
       let me = this
       axios
-        .get(`http://localhost:3000/tipo_usuario/get`)
+        .get(`http://localhost:3000/cliente/get`)
         .then(function (response) {
           me.arrayHerencia = response.data
         })
@@ -129,8 +142,9 @@ export default {
     guardarTipos() {
       let me = this
       axios
-        .post(`http://localhost:3000/tipo_usuario/create`, {
-          nombre: me.nombre, //Aqui se envian los atributos
+        .post(`http://localhost:3000/venta/create`, {
+          monto: me.monto,
+          id_clinte: me.id_clinte, //Aqui se envian los atributos
           //primero como se llama en backend, luego como se declaro en frontend
         })
         .then(function (response) {
@@ -146,16 +160,18 @@ export default {
     actualizarTipos() {
       let me = this
       axios
-        .put(`http://localhost:3000/tipo_usuario/update`, {
+        .put(`http://localhost:3000/venta/update`, {
           id: me.id,
-          nombre: me.nombre,
+          monto: me.monto,
+          id_clinte: me.id_clinte,
         })
         .then(function (response) {
           me.traerTipos()
           console.log(response)
           me.accion = 1
           me.id = 0
-          me.nombre = ''
+          me.monto = ''
+          me.id_clinte = 0
         })
         .catch(function (error) {
           console.log(error)
@@ -164,15 +180,16 @@ export default {
     eliminarTipos() {
       let me = this
       axios
-        .delete(`http://localhost:3000/tipo_usuario/delete`, {
+        .delete(`http://localhost:3000/venta/delete`, {
           id: me.id,
         })
         .then(function (response) {
           me.traerTipos()
           console.log(response)
           me.accion = 1
-          me.nombre = ''
+          me.monto = ''
           me.id = 0
+          me.id_clinte = 0
         })
         .catch(function (error) {
           console.log(error)
@@ -181,16 +198,18 @@ export default {
     definirAccion(accion, data = []) {
       let me = this
       switch (accion) {
-        case 'eliminar': {
-          me.id = data['id']
-          me.nombre = data['nombre']
-          me.accion = 3
-          break
-        }
         case 'actualizar': {
           me.id = data['id']
-          me.nombre = data['nombre']
+          me.monto = data['monto']
+          me.id_clinte = data['id_clinte']
           me.accion = 2
+          break
+        }
+        case 'eliminar': {
+          me.id = data['id']
+          me.monto = data['monto']
+          me.id_clinte = data['id_clinte']
+          me.accion = 3
           break
         }
       }

@@ -10,14 +10,16 @@
                 <th>Id</th>
                 <th>Nombre</th>
                 <th>Estado</th>
+                <td>Tipo de usuario</td>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="tipos in arrayTipos" :key="tipos.id">
+              <tr v-for="tipos in arrayUsuario" :key="tipos.id">
                 <td v-text="tipos.id"></td>
-                <td v-text="tipos.nombre"></td>
+                <td v-text="tipos.user"></td>
                 <td v-text="tipos.estado"></td>
+                <td v-text="tipos.tipo_usuario.nombre"></td>
                 <td>
                   <CButton
                     color="warning"
@@ -93,6 +95,7 @@ export default {
     return {
       arrayTipos: [],
       arrayHerencia: [],
+      arrayUsuario: [],
       accion: 1, //1 para ingreso, 2 para actualizacion, 3 para eliminar
       nombre: '',
       id: 0,
@@ -109,6 +112,17 @@ export default {
         .get(`http://localhost:3000/tipo_usuario/get`)
         .then(function (response) {
           me.arrayTipos = response.data
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    traerUsuario() {
+      let me = this
+      axios
+        .get(`http://localhost:3000/usuario/get`)
+        .then(function (response) {
+          me.arrayUsuario = response.data
         })
         .catch(function (error) {
           console.log(error)
@@ -164,7 +178,7 @@ export default {
     eliminarTipos() {
       let me = this
       axios
-        .delete(`http://localhost:3000/tipo_usuario/delete`, {
+        .put(`http://localhost:3000/tipo_usuario/delete`, {
           id: me.id,
         })
         .then(function (response) {
@@ -197,7 +211,7 @@ export default {
     },
   },
   mounted() {
-    this.traerTipos(), this.traerHerencia()
+    this.traerTipos(), this.traerHerencia(), this.traerUsuario()
   },
 }
 </script>

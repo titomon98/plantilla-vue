@@ -7,7 +7,7 @@ export default [
   },
   {
     component: 'CNavTitle',
-    name: 'Theme',
+    name: 'Arquitectuar 1',
   },
   {
     component: 'CNavItem',
@@ -17,12 +17,42 @@ export default [
   },
   {
     component: 'CNavItem',
+    name: 'Montado',
+    to: '/theme/montado',
+    icon: 'cil-user',
+    badge: {
+      color: 'warning',
+      text: 'Montado',
+    },
+  },
+  {
+    component: 'CNavItem',
     name: 'CRUD',
     to: '/theme/crud',
     icon: 'cil-pencil',
     badge: {
       color: 'danger',
       text: 'IMPORTANTE',
+    },
+  },
+  {
+    component: 'CNavItem',
+    name: 'Clientes',
+    to: '/theme/clientes',
+    icon: 'cil-pencil',
+    badge: {
+      color: 'danger',
+      text: 'Clientes',
+    },
+  },
+  {
+    component: 'CNavItem',
+    name: 'Proveedores',
+    to: '/theme/proveedores',
+    icon: 'cil-pencil',
+    badge: {
+      color: 'danger',
+      text: 'Proveedores',
     },
   },
 ]

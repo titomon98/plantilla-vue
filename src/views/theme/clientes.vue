@@ -4,29 +4,36 @@
       <CCard class="mb-4">
         <CCardHeader> Tabla </CCardHeader>
         <CCardBody>
-          <table>
+          <table class="table table-info">
             <thead>
               <tr>
                 <th>Id</th>
                 <th>Nombre</th>
-                <th>Estado</th>
+                <th>Direccion</th>
+                <th>Correo</th>
+                <th>Telefono</th>
+                <th>Nit</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="tipos in arrayTipos" :key="tipos.id">
-                <td v-text="tipos.id"></td>
-                <td v-text="tipos.nombre"></td>
-                <td v-text="tipos.estado"></td>
+              <tr v-for="cliente in arrayClientes" :key="cliente.id">
+                <td v-text="cliente.id"></td>
+                <td v-text="cliente.nombre"></td>
+                <td v-text="cliente.direccion"></td>
+                <td v-text="cliente.email"></td>
+                <td v-text="cliente.telefono"></td>
+                <td v-text="cliente.nit"></td>
+
                 <td>
                   <CButton
                     color="warning"
-                    @click="definirAccion('actualizar', tipos)"
+                    @click="definirAccion('actualizar', cliente)"
                     >Actualizar</CButton
                   >
                   <CButton
                     color="danger"
-                    @click="definirAccion('eliminar', tipos)"
+                    @click="definirAccion('eliminar', cliente)"
                     >Eliminar</CButton
                   >
                 </td>
@@ -47,10 +54,40 @@
               <CFormLabel>Nombre</CFormLabel>
               <CFormInput
                 type="text"
-                placeholder="Tipo de usuario"
+                placeholder="Cliente"
                 v-model.trim="nombre"
                 :disabled="accion === 3"
-              /><!--
+              />
+              <CFormLabel>Direccion</CFormLabel>
+              <CFormInput
+                type="text"
+                placeholder="Dir"
+                v-model.trim="direccion"
+                :disabled="accion === 3"
+              />
+              <CFormLabel>Telefono</CFormLabel>
+              <CFormInput
+                type="text"
+                placeholder="Cliente"
+                v-model.trim="telefono"
+                :disabled="accion === 3"
+              />
+              <CFormLabel>Correo electronico</CFormLabel>
+              <CFormInput
+                type="email"
+                placeholder="Cliente"
+                v-model.trim="email"
+                :disabled="accion === 3"
+              />
+              <CFormLabel>Nit</CFormLabel>
+              <CFormInput
+                type="text"
+                placeholder="Cliente"
+                v-model.trim="nit"
+                :disabled="accion === 3"
+              />
+
+              <!--
               <CSelect label="Tabla heredada" :options="arrayHerencia" /> -->
               <select>
                 <option
@@ -61,19 +98,22 @@
                   :v-model="id_heredado"
                 />
               </select>
-              <CButton color="info" v-if="accion === 1" @click="guardarTipos()"
+              <CButton
+                color="info"
+                v-if="accion === 1"
+                @click="guardarClientes()"
                 >Guardar
               </CButton>
               <CButton
                 color="warning"
                 v-if="accion === 2"
-                @click="actualizarTipos()"
+                @click="actualizarClientes()"
                 >Actualizar
               </CButton>
               <CButton
                 color="danger"
                 v-if="accion === 3"
-                @click="eliminarTipos()"
+                @click="eliminarClientes()"
                 >Eliminar
               </CButton>
             </div>
@@ -88,10 +128,10 @@
 import axios from 'axios'
 
 export default {
-  name: 'Typography',
+  name: 'clientes',
   data() {
     return {
-      arrayTipos: [],
+      arrayClientes: [],
       arrayHerencia: [],
       accion: 1, //1 para ingreso, 2 para actualizacion, 3 para eliminar
       nombre: '',
@@ -103,12 +143,12 @@ export default {
     //aqui cuando ya querramos paginar
   },
   methods: {
-    traerTipos() {
+    traerClientes() {
       let me = this
       axios
-        .get(`http://localhost:3000/tipo_usuario/get`)
+        .get(`http://localhost:3000/clientes/get`)
         .then(function (response) {
-          me.arrayTipos = response.data
+          me.arrayClientes = response.data
         })
         .catch(function (error) {
           console.log(error)
@@ -118,7 +158,7 @@ export default {
       //Aqui llamar a traer los datos de la tabla que hereda
       let me = this
       axios
-        .get(`http://localhost:3000/tipo_usuario/get`)
+        .get(`http://localhost:3000/clientes/get`)
         .then(function (response) {
           me.arrayHerencia = response.data
         })
@@ -126,52 +166,72 @@ export default {
           console.log(error)
         })
     },
-    guardarTipos() {
+    guardarClientes() {
       let me = this
       axios
-        .post(`http://localhost:3000/tipo_usuario/create`, {
-          nombre: me.nombre, //Aqui se envian los atributos
+        .post(`http://localhost:3000/clientes/create`, {
+          nombre: me.nombre,
+          direccion: me.direccion,
+          telefono: me.telefono,
+          email: me.email, //Aqui se envian los atributos
+          nit: me.nit,
           //primero como se llama en backend, luego como se declaro en frontend
         })
         .then(function (response) {
-          me.traerTipos()
+          me.traerClientes()
           console.log(response)
           me.accion = 1
           me.nombre = ''
+          me.direccion = ''
+          me.telefono = ''
+          me.email = ''
+          me.nit = ''
         })
         .catch(function (error) {
           console.log(error)
         })
     },
-    actualizarTipos() {
+    actualizarClientes() {
       let me = this
       axios
-        .put(`http://localhost:3000/tipo_usuario/update`, {
+        .put(`http://localhost:3000/clientes/update`, {
           id: me.id,
           nombre: me.nombre,
+          direccion: me.direccion,
+          telefono: me.telefono,
+          email: me.email, //Aqui se envian los atributos
+          nit: me.nit,
         })
         .then(function (response) {
-          me.traerTipos()
+          me.traerClientes()
           console.log(response)
           me.accion = 1
           me.id = 0
           me.nombre = ''
+          me.direccion = ''
+          me.telefono = ''
+          me.email = ''
+          me.nit = ''
         })
         .catch(function (error) {
           console.log(error)
         })
     },
-    eliminarTipos() {
+    eliminarClientes() {
       let me = this
       axios
-        .put(`http://localhost:3000/tipo_usuario/delete`, {
+        .put(`http://localhost:3000/clientes/delete`, {
           id: me.id,
         })
         .then(function (response) {
-          me.traerTipos()
+          me.traerClientes()
           console.log(response)
           me.accion = 1
           me.nombre = ''
+          me.direccion = ''
+          me.telefono = ''
+          me.email = ''
+          me.nit = ''
           me.id = 0
         })
         .catch(function (error) {
@@ -184,12 +244,20 @@ export default {
         case 'actualizar': {
           me.id = data['id']
           me.nombre = data['nombre']
+          me.direccion = data['direccion']
+          me.telefono = data['telefono']
+          me.email = data['email']
+          me.nit = data['nit']
           me.accion = 2
           break
         }
         case 'eliminar': {
           me.id = data['id']
           me.nombre = data['nombre']
+          me.direccion = data['direccion']
+          me.telefono = data['telefono']
+          me.email = data['email']
+          me.nit = data['nit']
           me.accion = 3
           break
         }
@@ -197,7 +265,7 @@ export default {
     },
   },
   mounted() {
-    this.traerTipos(), this.traerHerencia()
+    this.traerClientes(), this.traerHerencia()
   },
 }
 </script>

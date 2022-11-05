@@ -2,7 +2,7 @@
   <CRow>
     <CCol>
       <CCard class="mb-4">
-        <CCardHeader>Listado de ventas</CCardHeader>
+        <CCardHeader>Listado de ventas </CCardHeader>
         <CCardBody>
           <table>
             <thead>
